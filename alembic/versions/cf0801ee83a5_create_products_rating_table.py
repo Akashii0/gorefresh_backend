@@ -1,8 +1,8 @@
-"""create_user_refresh_token table
+"""create products rating table
 
-Revision ID: 4acfe5d185fe
-Revises: 1e23536f7ed7
-Create Date: 2025-05-03 13:55:53.807837
+Revision ID: cf0801ee83a5
+Revises: 128426c53f17
+Create Date: 2026-05-05 21:55:17.115420
 
 """
 
@@ -13,24 +13,23 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "4acfe5d185fe"
-down_revision: Union[str, None] = "1e23536f7ed7"
+revision: str = "cf0801ee83a5"
+down_revision: Union[str, None] = "128426c53f17"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
     op.create_table(
-        "user_refresh_tokens",
+        "product_ratings",
         sa.Column("id", sa.Integer, primary_key=True, autoincrement=True),
         sa.Column(
-            "user_id",
+            "food_item_id",
             sa.Integer,
-            sa.ForeignKey("users.id", ondelete="CASCADE"),
+            sa.ForeignKey("products.id", ondelete="CASCADE"),
             nullable=False,
         ),
-        sa.Column("token", sa.String, unique=True, nullable=False),
-        sa.Column("is_active", sa.Boolean, server_default=sa.true(), nullable=False),
+        sa.Column("rating", sa.Integer, nullable=False),  # 1 to 5
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),
@@ -41,4 +40,4 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.drop_table("user_refresh_tokens")
+    op.drop_table("product_ratings")
