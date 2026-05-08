@@ -8,12 +8,14 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import ORJSONResponse
 from sqlalchemy.orm import Session
 
-from app.core.database import get_session
+from app.Admin.apis import router as admin_router
+from app.Admin.services import create_first_admin
 from app.common.exceptions import (
     BadGatewayError,
     CustomHTTPException,
     InternalServerError,
 )
+from app.core.database import AsyncSessionLocal, get_session
 from app.core.handlers import (
     bad_gateway_error_exception_handler,
     base_exception_handler,
@@ -22,6 +24,7 @@ from app.core.handlers import (
     request_validation_exception_handler,
 )
 from app.core.tags import RouteTags
+from app.Product.apis import router as product_router
 from app.User.apis import router as user_router
 
 # Globals
@@ -38,6 +41,11 @@ async def lifespan(_: FastAPI):
     # Bigger Threadpool i.e you send a bunch of requests it will handle a max of 1000 at a time, the default is 40 # pylint: disable=line-too-long
     limiter = to_thread.current_default_thread_limiter()
     limiter.total_tokens = 1000
+
+    # Get database session and create admin
+    print("Creating admin")
+    async with AsyncSessionLocal() as session:  # type: ignore
+        await create_first_admin(db=session)
 
     # Shutdown Code
     yield
@@ -90,3 +98,5 @@ async def health(_: Session = Depends(get_session)):
 
 # Routers
 app.include_router(user_router, tags=[tags.USER])
+app.include_router(admin_router, tags=[tags.ADMIN])
+app.include_router(product_router, tags=[tags.PRODUCT])
