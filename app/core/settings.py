@@ -24,6 +24,12 @@ class Settings(BaseSettings):
     USER_SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MIN: int
     REFRESH_TOKEN_EXPIRE_HOUR: int
+    ADMIN_SECRET_KEY: str
+    ADMIN_FIRST_NAME: str
+    ADMIN_LAST_NAME: str
+    ADMIN_EMAIL: str
+    ADMIN_PASSWORD: str
+    ADMIN_PHONE: str
 
     # Database
     POSTGRES_DATABASE_URL: str
