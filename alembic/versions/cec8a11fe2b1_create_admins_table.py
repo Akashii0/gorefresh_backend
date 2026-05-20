@@ -23,7 +23,7 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     op.create_table(
         "admins",
-        sa.Column("id", sa.Integer, primary_key=True),
+        sa.Column("id", sa.Integer, primary_key=True, autoincrement=True),
         sa.Column("pfp_url", sa.String, nullable=False, default="/avatar.png"),
         sa.Column("first_name", sa.String(50), nullable=True),
         sa.Column("last_name", sa.String(50), nullable=True),
