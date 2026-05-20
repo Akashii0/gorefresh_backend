@@ -13,6 +13,9 @@ class RouteTags(BaseModel):
     # admin tags
     ADMIN: str = "Admin Endpoints"
 
+    # Cart tags
+    CART: str = "Cart Endpoints"
+
     # product tags
     PRODUCT: str = "Product Endpoints"
     PRODUCT_CATEGORY: str = "Product Category"
