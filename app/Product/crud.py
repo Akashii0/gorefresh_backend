@@ -81,6 +81,13 @@ class ProductCRUD(CRUDBase[models.Product]):
 
         return Products, total
 
+    async def get_batch_products(self, ids: list[int]):
+        result = await self.db.execute(
+            select(models.Product).where(models.Product.id.in_(ids))
+        )
+
+        return list(result.scalars().all())
+
 
 class ProductRatingCRUD(CRUDBase[models.ProductRating]):
     """

@@ -8,6 +8,7 @@ class User(BaseModel):
     id: int = Field(description="The User's ID")
     first_name: str = Field(description="The User's first name")
     last_name: str = Field(description="The User's last name")
+    email: str = Field(description="The User's email")
     is_active: bool = Field(description="Whether the User is active or not")
     updated_at: datetime | None = Field(
         default=None, description="The User's last update date"

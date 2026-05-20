@@ -1,3 +1,4 @@
+import select
 from app.core.database import AsyncSession
 from app.Product.crud import ProductCategoryCRUD, ProductCRUD
 from app.Product.exceptions import ProductCategoryNotFound, ProductNotFound
@@ -57,3 +58,12 @@ async def get_product_by_id(id: int, db: AsyncSession, raise_exc: bool = True):
         raise ProductNotFound()
 
     return obj
+
+
+async def get_products_by_ids(ids: list[int], db: AsyncSession):
+    # Init crud
+    product_crud = ProductCRUD(db=db)
+
+    products = await product_crud.get_batch_products(ids=ids)
+
+    return products

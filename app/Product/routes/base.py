@@ -200,4 +200,4 @@ async def route_product_edit(
     )
 
     # Format product to dict
-    return {"data": await format_product(product_=product)}
+    return {"data": await format_product(product=product)}

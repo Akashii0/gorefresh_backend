@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import cast
 from fastapi import UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -100,7 +100,7 @@ async def rate_product(data: create.RatingCreate, product_id: int, db: AsyncSess
     setattr(product, "no_ratings", count)
 
     # update the restaurant updated time
-    setattr(product, "updated_at", datetime.now())
+    setattr(product, "updated_at", datetime.now(timezone.utc))
 
     await db.commit()
 
@@ -162,7 +162,7 @@ async def edit_product(
         setattr(product, k, v)
 
     # update the restaurant updated time
-    setattr(product, "updated_at", datetime.now())
+    setattr(product, "updated_at", datetime.now(timezone.utc))
 
     # Save changes
     await db.commit()

@@ -68,12 +68,18 @@ async def get_current_user(
     Returns:
         models.User: The user object
     """
-    # Split token
-    try:
-        token = token.split()[1]
 
-    except KeyError:
-        raise Unauthorized("Invalid token")
+    # Check: header exists
+    if not token:
+        raise Unauthorized("Authorization header missing")
+
+    # Validate format: Bearer <token>
+    parts = token.split()
+
+    if len(parts) != 2 or parts[0].lower() != "bearer":
+        raise Unauthorized("Invalid authorization header format")
+
+    token = parts[1]
 
     # Verify token
     user_id = await token_gen.verify(

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Boolean,
@@ -38,8 +38,12 @@ class Product(DBBase):
     )
     no_orders = Column(Integer, default=0, nullable=False)
     no_ratings = Column(Integer, default=0, nullable=False)
-    updated_at = Column(DateTime(timezone=True), onupdate=datetime.now, nullable=True)
-    created_at = Column(DateTime(timezone=True), default=datetime.now, nullable=False)
+    updated_at = Column(
+        DateTime(timezone=True), onupdate=datetime.now(timezone.utc), nullable=True
+    )
+    created_at = Column(
+        DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False
+    )
     created_by = Column(
         Integer, ForeignKey("admins.id", ondelete="CASCADE"), nullable=False
     )
@@ -61,8 +65,12 @@ class ProductCategory(DBBase):
     id = Column(Integer, primary_key=True, autoincrement=True)
     thumbnail_url = Column(String, default="/avatar.png", nullable=False)
     name = Column(String(100), unique=True, nullable=False)
-    updated_at = Column(DateTime(timezone=True), onupdate=datetime.now, nullable=True)
-    created_at = Column(DateTime(timezone=True), default=datetime.now, nullable=False)
+    updated_at = Column(
+        DateTime(timezone=True), onupdate=datetime.now(timezone.utc), nullable=True
+    )
+    created_at = Column(
+        DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False
+    )
     created_by = Column(
         Integer, ForeignKey("admins.id", ondelete="CASCADE"), nullable=False
     )
@@ -84,4 +92,6 @@ class ProductRating(DBBase):
         Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False
     )
     rating = Column(Integer, nullable=False)  # 1 to 5
-    created_at = Column(DateTime(timezone=True), default=datetime.now, nullable=False)
+    created_at = Column(
+        DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False
+    )
