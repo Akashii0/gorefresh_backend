@@ -100,7 +100,7 @@ async def rate_product(data: create.RatingCreate, product_id: int, db: AsyncSess
     setattr(product, "no_ratings", count)
 
     # update the restaurant updated time
-    setattr(product, "updated_at", datetime.now(timezone.utc))
+    setattr(product, "updated_at", datetime.now(timezone.utc)(timezone.utc))
 
     await db.commit()
 
@@ -162,7 +162,7 @@ async def edit_product(
         setattr(product, k, v)
 
     # update the restaurant updated time
-    setattr(product, "updated_at", datetime.now(timezone.utc))
+    setattr(product, "updated_at", datetime.now(timezone.utc)(timezone.utc))
 
     # Save changes
     await db.commit()

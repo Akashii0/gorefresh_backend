@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class CustomHTTPException(Exception):
@@ -20,7 +20,7 @@ class InternalServerError(Exception):
     def __init__(self, msg: str, *, loc: str):
         self.msg = msg
         self.loc = loc
-        self.timestamp = datetime.now()
+        self.timestamp = datetime.now(timezone.utc)
 
 
 class BadGatewayError(Exception):
@@ -32,7 +32,7 @@ class BadGatewayError(Exception):
         self.msg = msg
         self.loc = loc
         self.service = service
-        self.timestamp = datetime.now()
+        self.timestamp = datetime.now(timezone.utc)
 
 
 class BadRequest(CustomHTTPException):

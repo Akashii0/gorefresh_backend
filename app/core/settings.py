@@ -34,6 +34,17 @@ class Settings(BaseSettings):
     # Database
     POSTGRES_DATABASE_URL: str
 
+    # Brevo
+    BREVO_API: str
+    BREVO_URL: str
+    DEFAULT_SENDER_NAME: str
+    DEFAULT_SENDER_EMAIL: str
+
+    # Paystack
+    PAYSTACK_URL: str
+    PAYSTACK_CALLBACK_BASE_URL: str
+    PAYSTACK_API_KEY: str
+
     @model_validator(mode="after")
     def _check_secret(self) -> Self:
         """Ensure that secrets are set properly."""

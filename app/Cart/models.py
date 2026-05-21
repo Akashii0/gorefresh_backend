@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric
 from app.core.database import DBBase
 from sqlalchemy.orm import Mapped, relationship
@@ -19,7 +19,7 @@ class Cart(DBBase):
     service_fee = Column(Numeric(6, 2))
     total_amount = Column(Numeric(10, 2))
     updated_at = Column(DateTime(timezone=True), nullable=True)
-    created_at = Column(DateTime(timezone=True), default=datetime.now, nullable=False)
+    created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False)
 
     products: Mapped[list["CartProduct"]] = relationship(
         "CartProduct",

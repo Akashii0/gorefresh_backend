@@ -1,0 +1,194 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <title>Sahara Invoice</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f7f7f7;
+        }
+
+        .invoice-box {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            font-size: 16px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #333;
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+        .invoice-box table td {
+            padding: 8px;
+            vertical-align: top;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.logo-container {
+            width: 50%;
+        }
+
+        .invoice-box table tr.top table td.logo-container img {
+            max-width: 150px;
+        }
+
+        .invoice-box table tr.top table td.invoice-info {
+            text-align: right;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.information table td:first-child {
+            color: #0C461B;
+            font-weight: bold;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #0C461B;
+            color: #fff;
+            font-weight: bold;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+
+        .invoice-box table tr.total td {
+            font-weight: bold;
+        }
+
+        .invoice-box table tr.total td:nth-child(2) {
+            text-align: right;
+            border-top: 2px solid #0C461B;
+            color: #0C461B;
+        }
+
+        @media only screen and (max-width: 600px) {
+
+            .invoice-box table tr.top table td,
+            .invoice-box table tr.information table td {
+                display: block;
+                text-align: center;
+            }
+
+            .invoice-box table tr.top table td.logo-container {
+                text-align: center;
+                padding-bottom: 10px;
+            }
+
+            .invoice-box table tr.top table td.invoice-info {
+                text-align: center;
+            }
+        }
+
+        .divFooter {
+            position: fixed;
+            height: 30px;
+            background-color: #0C461B;
+            bottom: 0;
+            width: 100%;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="logo-container">
+                                <img src="data:image/png;base64,{{ logo_base64 }}" alt="Gorefresh Logo" />
+                            </td>
+
+                            <td class="invoice-info">
+                                Invoice #: {{ order.id }}<br>
+                                Created: {{ order.created_at.strftime('%Y-%m-%d') }}<br>
+                                Payment Method: {{ order.payment_method }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td>
+                                Gorefresh<br>
+                            </td>
+                            <td>
+                                {{ order.full_name }}<br>
+                                {{ order.email }}<br>
+                                {{ order.phone_number }}<br>
+                                {{ order.delivery_address }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td>Product</td>
+                <td>Price</td>
+            </tr>
+
+            {% for item in order.products %}
+            <tr class="item">
+                <td>{{ item.name }} (x{{ item.quantity }})</td>
+                <td>NGN{{ item.unit_price * item.quantity }}</td>
+            </tr>
+            {% endfor %}
+
+
+            <tr class="total">
+                <td>Subtotal</td>
+                <td>NGN{{ order.subtotal }}</td>
+            </tr>
+
+            <tr class="total">
+                <td>Service Fee</td>
+                <td>NGN{{ order.service_fee }}</td>
+            </tr>
+
+            <tr class="total">
+                <td>Delivery Fee</td>
+                <td>NGN{{ order.delivery_fee }}</td>
+            </tr>
+
+            <tr class="total">
+                <td>Total</td>
+                <td>NGN{{ order.total_amount }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="divFooter"></div>
+</body>
+
+</html>

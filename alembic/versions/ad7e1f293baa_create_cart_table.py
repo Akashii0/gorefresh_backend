@@ -6,7 +6,7 @@ Create Date: 2026-05-15 10:04:10.617666
 
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Sequence, Union
 
 from alembic import op
@@ -39,7 +39,7 @@ def upgrade() -> None:
             "updated_at",
             sa.DateTime(timezone=True),
             server_default=sa.text("now()"),
-            onupdate=datetime.now,
+            onupdate=datetime.now(timezone.utc),
         ),
         sa.Column(
             "created_at",

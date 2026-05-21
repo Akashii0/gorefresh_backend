@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>New Order Notification - Sahara Deliveries</title>
+</head>
+
+<body style="margin:0; padding:0; background-color:#f4f4f4; font-family:Arial, sans-serif;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding:20px; background-color:#f4f4f4;">
+    <tr>
+      <td align="center">
+
+        <table width="600" cellpadding="0" cellspacing="0"
+          style="background-color:#ffffff; padding:30px; border-radius:8px;">
+
+          <tr>
+            <td align="center" style="padding-bottom:20px;">
+              <img src="https://res.cloudinary.com/dexrtrhdo/image/upload/v1757779644/Logo_p5cipb.png"
+                alt="Sahara Deliveries" width="150" style="display:block; max-width:100%; height:auto;">
+            </td>
+          </tr>
+
+          <tr>
+            <td style="font-size:22px; font-weight:bold; color:#333333; padding-bottom:20px;">
+              🚨 New Order Ready for Processing
+            </td>
+          </tr>
+
+          <tr>
+            <td style="font-size:16px; color:#555555; line-height:1.6;">
+              <strong>Order Details:</strong><br><br>
+
+              <table width="100%" cellpadding="5" cellspacing="0" style="font-size:15px; color:#333;">
+                <tr>
+                  <td width="40%" style="font-weight:bold;">Order ID:</td>
+                  <td>{{order_id}}</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:bold;">Restaurant Name:</td>
+                  <td>{{restaurant_name}}</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:bold;">Customer Name:</td>
+                  <td>{{customer_name}}</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:bold;">Delivery Address:</td>
+                  <td>{{delivery_address}}</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:bold;">Delivery Instructions:</td>
+                  <td>{{delivery_instructions}}</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:bold;">Contact:</td>
+                  <td>{{contact_number}}</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:bold; vertical-align:top;">Items Ordered:</td>
+                  <td>
+                    <pre
+                      style="font-family:monospace; background:#f9f9f9; padding:10px; border-radius:4px; white-space:pre-wrap;">{{items_ordered}}</pre>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-weight:bold;">Total Amount:</td>
+                  <td><strong>₦{{total_amount}}</strong></td>
+                </tr>
+              </table>
+
+              <br>
+              <strong>📄 Receipt:</strong> Attached as PDF.
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding-top:30px; font-size:14px; color:#999999; text-align:center;">
+              Sahara Deliveries Admin Notification
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+
+</html>

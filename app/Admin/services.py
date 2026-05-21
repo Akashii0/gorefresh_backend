@@ -1,7 +1,7 @@
 # type: ignore
 import logging
 import secrets
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -140,7 +140,7 @@ async def login_admin(credential: base.AdminLoginCredentials, db: AsyncSession):
     if not await verify_password(raw=credential.password, hashed=str(obj.password)):
         raise Unauthorized("Invalid Login Credentials")
 
-    setattr(obj, "last_login", datetime.now())
+    setattr(obj, "last_login", datetime.now(timezone.utc))
     await db.commit()
 
     return obj

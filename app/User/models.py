@@ -15,9 +15,12 @@ class User(DBBase):
     last_name = Column(String, nullable=False)
     password = Column(String, nullable=False)
     email = Column(String, nullable=False)
+    phone = Column(String(15), unique=True, nullable=True)
     is_active = Column(Boolean, default=True, nullable=False)
     updated_at = Column(DateTime(timezone=True), onupdate=datetime.now(timezone.utc))
-    created_at = Column(DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc))
+    created_at = Column(
+        DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
+    )
 
 
 class UserRefreshToken(DBBase):
@@ -33,4 +36,6 @@ class UserRefreshToken(DBBase):
     )
     token = Column(String, unique=True, nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
-    created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False)
+    created_at = Column(
+        DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False
+    )

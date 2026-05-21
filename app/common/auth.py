@@ -1,5 +1,5 @@
 from typing import Dict, Optional, Type, Union
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -49,7 +49,7 @@ class AuthJWTGen:
         if type_token not in {"access", "refresh"}:
             raise ValueError("type_token must be 'access' or 'refresh'")
 
-        iat = datetime.now()
+        iat = datetime.now(timezone.utc)
         expire = iat + timedelta(
             minutes=self.access_expire_in
             if type_token == "access"
@@ -135,7 +135,10 @@ class AuthJWTGen:
             if payload.get("type") != "refresh":
                 raise Unauthorized(f"{sub_head}Token type is invalid")
 
-            if payload.get("exp") and datetime.utcnow().timestamp() > payload["exp"]:
+            if (
+                payload.get("exp")
+                and datetime.now(timezone.utc).timestamp() > payload["exp"]
+            ):
                 raise Unauthorized(f"{sub_head}Token expired")
 
             return payload
@@ -195,7 +198,7 @@ class AuthJWTGen:
             ref_expired_at: datetime = ref_token.created_at + timedelta(
                 hours=self.refresh_expire_in
             )
-            if datetime.now() > ref_expired_at.replace(tzinfo=None):
+            if datetime.now(timezone.utc) > ref_expired_at:
                 raise Unauthorized("Invalid Token")
 
             # Return the ID part of 'sub'

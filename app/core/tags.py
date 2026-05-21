@@ -16,6 +16,9 @@ class RouteTags(BaseModel):
     # Cart tags
     CART: str = "Cart Endpoints"
 
+    # Order tags
+    ORDER: str = "Order Endpoints"
+
     # product tags
     PRODUCT: str = "Product Endpoints"
     PRODUCT_CATEGORY: str = "Product Category"

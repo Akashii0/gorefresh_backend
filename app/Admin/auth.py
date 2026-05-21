@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import jwt
 from fastapi import HTTPException, status
@@ -42,7 +42,7 @@ class AdminTokenGenerator:
                 detail="Internal Server Error: Invalid Token sub",
             )
 
-        iat = datetime.now()
+        iat = datetime.now(timezone.utc)
         expire = iat + timedelta(minutes=self.access_expire_in)
 
         data = {
@@ -108,7 +108,7 @@ class AdminTokenGenerator:
             ref_expired_at: datetime = ref_token.created_at + timedelta(
                 hours=self.refresh_expire_in
             )  # type: ignore
-            if datetime.now() > ref_expired_at.replace(tzinfo=None):
+            if datetime.now(timezone.utc) > ref_expired_at.replace(tzinfo=None):
                 raise Unauthorized("Invalid Token")
 
             # Return the ID part of 'sub'

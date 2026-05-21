@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy import (
     Column,
@@ -12,6 +12,7 @@ from sqlalchemy import (
     Time,
 )
 from app.Product.models import Product
+from app.User.models import User
 from app.core.database import DBBase
 
 
@@ -32,7 +33,7 @@ class OrderItem(DBBase):
     quantity = Column(Integer, nullable=False)
     unit_price = Column(Numeric(7, 2), nullable=False)
     updated_at = Column(DateTime(timezone=True), nullable=True)
-    created_at = Column(DateTime(timezone=True), default=datetime.now, nullable=False)
+    created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False)
 
     product: Mapped["Product"] = relationship(
         "Product", backref="order_products", lazy="selectin"
@@ -82,7 +83,9 @@ class Order(DBBase):
     estimated_delivery_time = Column(String(50), nullable=False)
     actual_delivery_time = Column(Time(timezone=True), nullable=True)
     updated_at = Column(DateTime(timezone=True), nullable=True)
-    created_at = Column(DateTime(timezone=True), default=datetime.now, nullable=False)
+    created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False)
+
+    user: Mapped["User"] = relationship("User", backref="user_order", lazy="selectin")
 
     order_items: Mapped[list[OrderItem]] = relationship(
         "OrderItem", backref="order_food", lazy="selectin"

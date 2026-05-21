@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.Admin.apis import router as admin_router
 from app.Admin.services import create_first_admin
+from app.Cart.apis import router as cart_router
 from app.common.exceptions import (
     BadGatewayError,
     CustomHTTPException,
@@ -24,9 +25,9 @@ from app.core.handlers import (
     request_validation_exception_handler,
 )
 from app.core.tags import RouteTags
+from app.Order.apis import router as order_router
 from app.Product.apis import router as product_router
 from app.User.apis import router as user_router
-from app.Cart.apis import router as cart_router
 
 # Globals
 tags = RouteTags()
@@ -102,3 +103,4 @@ app.include_router(user_router, tags=[tags.USER])
 app.include_router(admin_router, tags=[tags.ADMIN])
 app.include_router(product_router, tags=[tags.PRODUCT])
 app.include_router(cart_router, tags=[tags.CART])
+app.include_router(order_router, tags=[tags.ORDER])

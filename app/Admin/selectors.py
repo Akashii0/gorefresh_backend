@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
 from fastapi import Header
@@ -121,7 +121,8 @@ async def get_admin_refresh_token(token: str, db: AsyncSession):
     token_expires_at: datetime = ref_token.created_at + timedelta(
         hours=settings.REFRESH_TOKEN_EXPIRE_HOUR  # type: ignore
     )
-    if datetime.now() > token_expires_at.replace(tzinfo=None):
+
+    if datetime.now(timezone.utc) > token_expires_at:
         raise Unauthorized("Refresh token has expired")
 
     return ref_token
