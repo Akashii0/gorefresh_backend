@@ -121,7 +121,7 @@ async def get_user_refresh_token(token: str, db: AsyncSession):
     token_expires_at: datetime = ref_token.created_at + timedelta(
         hours=settings.REFRESH_TOKEN_EXPIRE_HOUR  # type: ignore
     )
-    if datetime.now(timezone.utc)() > token_expires_at:
+    if datetime.now(timezone.utc) > token_expires_at:
         raise Unauthorized("Refresh token has expired")
 
     return ref_token
