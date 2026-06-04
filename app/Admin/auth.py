@@ -108,7 +108,7 @@ class AdminTokenGenerator:
             ref_expired_at: datetime = ref_token.created_at + timedelta(
                 hours=self.refresh_expire_in
             )  # type: ignore
-            if datetime.now(timezone.utc) > ref_expired_at.replace(tzinfo=None):
+            if datetime.now(timezone.utc) > ref_expired_at:
                 raise Unauthorized("Invalid Token")
 
             # Return the ID part of 'sub'
