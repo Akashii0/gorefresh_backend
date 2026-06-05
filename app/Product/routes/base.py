@@ -78,7 +78,7 @@ async def route_fetch_all_product_categories(
 
     total = cast(int, total)
     meta = get_pagination_metadata(
-        tno_s=int(total),
+        tno_items=int(total),
         count=len(categories),
         page=page,
         size=size,
