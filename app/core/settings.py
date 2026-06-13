@@ -45,6 +45,11 @@ class Settings(BaseSettings):
     PAYSTACK_CALLBACK_BASE_URL: str
     PAYSTACK_API_KEY: str
 
+    # Cloudinary
+    CLOUDINARY_CLOUD_NAME: str
+    CLOUDINARY_API_KEY: str
+    CLOUDINARY_API_SECRET: str
+
     @model_validator(mode="after")
     def _check_secret(self) -> Self:
         """Ensure that secrets are set properly."""
