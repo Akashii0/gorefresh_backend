@@ -88,6 +88,11 @@ class ProductCRUD(CRUDBase[models.Product]):
 
         return list(result.scalars().all())
 
+    async def delete(self, product: models.Product):
+        await self.db.delete(product)
+        await self.db.commit()
+        return True
+
 
 class ProductRatingCRUD(CRUDBase[models.ProductRating]):
     """

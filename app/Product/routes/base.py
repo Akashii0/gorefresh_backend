@@ -4,6 +4,7 @@ from fastapi import APIRouter, Query
 from app.common.annotations import DatabaseSession
 from app.Admin.annotations import CurrentAdmin
 from app.common.paginators import get_pagination_metadata
+from app.common.schemas import ResponseSchema
 from app.core.settings import get_settings
 from app.Product import models, selectors, services
 from app.Product.crud import ProductCategoryCRUD, ProductCRUD
@@ -99,7 +100,7 @@ async def route_fetch_all_product_categories(
     status_code=200,
     response_model=response.ProductResponse,
 )
-async def route_restaurant_info(product_id: int, db: DatabaseSession):
+async def route_Product_info(product_id: int, db: DatabaseSession):
     """
     This endpoint returns the product's information
     """
@@ -158,11 +159,11 @@ async def route_fetch_all_products(
     status_code=200,
     response_model=response.ProductResponse,
 )
-async def route_rate_restaurant(
+async def route_rate_Product(
     product_id: int, rating_in: create.RatingCreate, db: DatabaseSession
 ):
     """
-    This endpoint rates a restaurant
+    This endpoint rates a Product
     """
 
     product_rating = await services.rate_product(
@@ -189,7 +190,7 @@ async def route_product_edit(
     This endpoint creates a product
     """
 
-    # check for the restaurant
+    # check for the Product
     product = await selectors.get_product_by_id(id=product_id, db=db)
 
     # create the product
@@ -201,3 +202,30 @@ async def route_product_edit(
 
     # Format product to dict
     return {"data": await format_product(product=product)}
+
+
+@router.delete(
+    "/{product_id}",
+    summary="Delete a Product",
+    response_description="Product has been deleted successfully",
+    status_code=200,
+    response_model=ResponseSchema,
+)
+async def route_delete_Product(
+    curr_admin: CurrentAdmin, product_id: int, db: DatabaseSession
+):
+    """
+    This endpoint deletes a Product
+    """
+
+    # Init CRUD
+    Product_crud = ProductCRUD(db=db)
+
+    # Get Product
+    Product = cast(
+        models.Product, await selectors.get_product_by_id(id=product_id, db=db)
+    )
+
+    await Product_crud.delete(product=Product)
+
+    return {"msg": "The Product has been deleted successfully", "data": None}
