@@ -35,7 +35,7 @@ async def create_cart(
     """
 
     # Enforce one cart per user
-    existing_cart = await get_cart_by_user_id(user_id, db)
+    existing_cart = await get_cart_by_user_id(user_id, db, raise_exc=False)
     if existing_cart:
         raise BadRequest(
             "User already has an active cart. Use that cart instead of creating a new one."
