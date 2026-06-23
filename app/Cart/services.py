@@ -241,7 +241,7 @@ async def update_product_quantity_in_cart(
     setattr(cart, "updated_at", datetime.now(timezone.utc))
 
     await db.commit()
-    await db.refresh(cart)
+    # await db.refresh(cart)
 
     return cart
 

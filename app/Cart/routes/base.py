@@ -55,7 +55,7 @@ async def route_fetch_user_cart(curr_user: CurrentUser, db: DatabaseSession):
     if not cart:
         raise CartNotFound()
 
-    return {"msg": "Cart cleared successfully.", "data": await format_cart(cart=cart)}
+    return {"msg": "Cart fetched successfully.", "data": await format_cart(cart=cart)}
 
 
 @router.get(
@@ -136,6 +136,7 @@ async def route_cart_edit_product_quantity(
     cart_id: int,
     item_in: edit.CartProductEdit,
     db: DatabaseSession,
+    curr_user: CurrentUser,
 ):
     """
     This endpoint edits food item of an existing cart.
@@ -143,7 +144,7 @@ async def route_cart_edit_product_quantity(
 
     # edit item in cart
     cart = await services.update_product_quantity_in_cart(
-        cart_id=cart_id, data=item_in, db=db
+        user_id=curr_user.id, cart_id=cart_id, data=item_in, db=db
     )
 
     # Return formatted cart
