@@ -90,7 +90,7 @@ async def rate_product(data: create.RatingCreate, product_id: int, db: AsyncSess
     # init CRUD
     rating_crud = ProductRatingCRUD(db=db)
     product = cast(
-        models.Product, await selectors.get_product__by_id(id=product_id, db=db)
+        models.Product, await selectors.get_product_by_id(id=product_id, db=db)
     )
     await rating_crud.create(data={"product_id": product.id, **data.model_dump()})
 
@@ -99,7 +99,7 @@ async def rate_product(data: create.RatingCreate, product_id: int, db: AsyncSess
     setattr(product, "rating", round(avg, 1))
     setattr(product, "no_ratings", count)
 
-    # update the restaurant updated time
+    # update the product updated time
     setattr(product, "updated_at", datetime.now(timezone.utc)(timezone.utc))
 
     await db.commit()
