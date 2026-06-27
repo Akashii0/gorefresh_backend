@@ -51,7 +51,7 @@ async def route_cart_order_create(
     summary="Verify an order's status",
     response_description="The verification data",
     status_code=200,
-    response_model=ResponseSchema,
+    # response_model=ResponseSchema,
 )
 async def route_verify_payment(
     reference: str,
