@@ -273,7 +273,7 @@ async def verify_order_payment(reference: str, db: AsyncSession):
 
         if order.cart_id:  # type: ignore
             cart = await cart_selectors.get_cart_by_id(id=order.cart_id, db=db)  # type: ignore
-            await cart_services.delete_cart(cart=cart, db=db)
+            await cart_services.delete_cart(user_id=order.user_id, cart=cart, db=db)
 
         await db.commit()
         await db.refresh(order)
