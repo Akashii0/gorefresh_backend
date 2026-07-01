@@ -187,7 +187,7 @@ class AuthJWTGen:
             # Extract and validate the 'sub' field
             sub: str | None = payload.get("sub")
             if not sub:
-                raise Unauthorized("Invalid Token")
+                raise Unauthorized("Invalid Token SUB")
 
             # Ensure the token is of type 'access'
             if payload.get("type") != "access":
@@ -196,7 +196,7 @@ class AuthJWTGen:
             # Validate the 'sub' structure
             sub_parts = sub.split("-")
             if sub_parts[0] != sub_head or len(sub_parts) < 2:
-                raise Unauthorized("Invalid Token")
+                raise Unauthorized("Invalid Token SUB-PART")
 
             # Check: valid ref id
             ref_token = await ref_token_crud.get(id=int(payload["ref_id"]))
@@ -208,7 +208,7 @@ class AuthJWTGen:
                 hours=self.refresh_expire_in
             )
             if datetime.now(timezone.utc) > ref_expired_at:
-                raise Unauthorized("Invalid Token")
+                raise Unauthorized("Invalid Token (EXPIRED)")
 
             # Return the ID part of 'sub'
             return sub_parts[1]
@@ -216,5 +216,6 @@ class AuthJWTGen:
         except jwt.ExpiredSignatureError:
             raise Unauthorized("Access Token has expired")
 
-        except jwt.PyJWTError:
-            raise Unauthorized("Invalid Token")
+        except jwt.PyJWTError as e:
+            print(e)
+            raise Unauthorized("Invalid Token (PyJWTError)")
