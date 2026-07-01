@@ -66,7 +66,7 @@ async def route_user_login(cred_in: base.UserLoginCredential, db: DatabaseSessio
         subject=f"USER-{user.id}",
         type_token="access",
         ref_id=ref_token.id,
-        issuer="AyriaTech.com"
+        issuer="AyriaTech.com",
     )
 
     await db.commit()
@@ -102,7 +102,7 @@ async def route_user_token(
         subject=f"USER-{ref_token.user_id}",
         type_token="access",
         ref_id=ref_token.id,
-        issuer="AyriaTech.com"
+        issuer="AyriaTech.com",
     )
 
     return {
@@ -156,3 +156,10 @@ async def route_user_profile(curr_user: CurrentUser, db: DatabaseSession):
     user = await selectors.get_user_by_id(id=curr_user.id, db=db)
 
     return {"data": await formatters.format_user(user)}
+
+
+@router.get("/debug/time")
+async def debug_time():
+    from datetime import datetime, timezone
+
+    return {"server_utc": datetime.now(timezone.utc).isoformat()}

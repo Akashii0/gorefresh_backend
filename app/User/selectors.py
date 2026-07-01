@@ -1,18 +1,22 @@
+import logging
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
+
 from fastapi import Header
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.common.annotations import DatabaseSession
-from app.User.crud import UserCRUD, UserRefreshTokenCRUD
-from app.User.exceptions import UserNotFound
 from app.common.auth import AuthJWTGen
 from app.common.exceptions import Forbidden, Unauthorized
 from app.core.settings import get_settings
+from app.User.crud import UserCRUD, UserRefreshTokenCRUD
+from app.User.exceptions import UserNotFound
 
 # Globals
 settings = get_settings()
 token_gen = AuthJWTGen()
+
+logger = logging.getLogger(__name__)
 
 
 async def get_user_by_id(
@@ -121,7 +125,14 @@ async def get_user_refresh_token(token: str, db: AsyncSession):
     token_expires_at: datetime = ref_token.created_at + timedelta(
         hours=settings.REFRESH_TOKEN_EXPIRE_HOUR  # type: ignore
     )
-    if datetime.now(timezone.utc) > token_expires_at:
+    now = datetime.now(timezone.utc)
+
+    logger.info(f"Token created: {ref_token.created_at.isoformat()}")
+    logger.info(f"Expires at:   {token_expires_at.isoformat()}")
+    logger.info(f"Current time: {now.isoformat()}")
+    logger.info(f"Expired? {now > token_expires_at}")
+
+    if now > token_expires_at:
         raise Unauthorized("Refresh token has expired")
 
     return ref_token

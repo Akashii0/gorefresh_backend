@@ -1,3 +1,4 @@
+import logging
 from contextlib import asynccontextmanager
 
 from anyio import to_thread
@@ -31,6 +32,12 @@ from app.User.apis import router as user_router
 
 # Globals
 tags = RouteTags()
+
+# ── Configure logging ──────────────────────────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
 
 
 # Lifespan (startup, shutdown)

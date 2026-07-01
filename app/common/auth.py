@@ -1,11 +1,14 @@
-from typing import Dict, Optional, Type, Union
+import logging
 from datetime import datetime, timedelta, timezone
+from typing import Dict, Optional, Type, Union
+
 import jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.common.exceptions import Unauthorized
 from app.core.settings import get_settings
 
+logger = logging.getLogger(__name__)
 settings = get_settings()
 
 
@@ -14,6 +17,9 @@ class AuthJWTGen:
         self.secret_key = settings.USER_SECRET_KEY
         self.access_expire_in = settings.ACCESS_TOKEN_EXPIRE_MIN
         self.refresh_expire_in = settings.REFRESH_TOKEN_EXPIRE_HOUR
+
+        logger.info(f"ACCESS_TOKEN_EXPIRE_MIN = {self.access_expire_in}")
+        logger.info(f"REFRESH_TOKEN_EXPIRE_HOUR = {self.refresh_expire_in}")
 
     async def create_token(
         self,
@@ -166,6 +172,9 @@ class AuthJWTGen:
         """
         # Init crud
         ref_token_crud = crud_class(db=db)
+
+        logger.info(f"ACCESS_TOKEN_EXPIRE_MIN = {self.access_expire_in}")
+        logger.info(f"REFRESH_TOKEN_EXPIRE_HOUR = {self.refresh_expire_in}")
 
         try:
             # Decode and validate the token
